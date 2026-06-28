@@ -11,6 +11,7 @@ from ddgs import DDGS
 from rich.console import Console
 from rich.markdown import Markdown
 from rich.progress import Progress, SpinnerColumn, BarColumn, TextColumn
+import logging
 
 load_dotenv()
 
@@ -51,6 +52,7 @@ def web_search(query: str, max_results: int = 8) -> str:
                 ]
                 return json.dumps(limpos, ensure_ascii=False)
         except Exception as e:  # throttling do DuckDuckGo cai aqui
+            logging.exception("Unexpected error")
             console.print(
                 f"     [yellow]↻ tentativa {i + 1}/{tentativas} sem resultado "
                 f"(aguardando…)[/yellow]"
@@ -58,8 +60,10 @@ def web_search(query: str, max_results: int = 8) -> str:
         # backoff progressivo antes de tentar de novo
         time.sleep(2 * (i + 1))
     return json.dumps(
-        {"aviso": "Nenhum resultado retornado após várias tentativas (possível "
-                  "limitação de taxa do provedor de busca). Tente novamente."},
+        {
+            "aviso": "Nenhum resultado retornado após várias tentativas (possível "
+            "limitação de taxa do provedor de busca). Tente novamente."
+        },
         ensure_ascii=False,
     )
 
@@ -119,7 +123,8 @@ def _nome_arquivo(pergunta: str) -> str:
     """Gera um nome de arquivo seguro (sem acentos) a partir do tema pesquisado."""
     # Remove acentos para um slug 100% portável entre sistemas de arquivos.
     sem_acento = "".join(
-        c for c in unicodedata.normalize("NFKD", pergunta)
+        c
+        for c in unicodedata.normalize("NFKD", pergunta)
         if not unicodedata.combining(c)
     )
     base = "".join(c if c.isalnum() or c in " -_" else "" for c in sem_acento)
