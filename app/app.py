@@ -67,6 +67,24 @@ def info_card() -> rx.Component:
             ),
             class_name="space-y-1 pl-1",
         ),
+        rx.el.div(
+            rx.el.div(
+                rx.icon(
+                    "shield-alert",
+                    class_name="h-5 w-5 text-indigo-600 shrink-0",
+                ),
+                rx.el.span(
+                    "Academic-Only Scope",
+                    class_name="text-xs font-bold uppercase tracking-wider text-indigo-900",
+                ),
+                class_name="flex items-center gap-1.5 mb-2",
+            ),
+            rx.el.p(
+                "Todas as consultas são estritamente limitadas a repositórios científicos, papers, anais de congressos, periódicos acadêmicos credenciados e servidores de preprints para evitar blogs ou opiniões não-científicas.",
+                class_name="text-xs text-indigo-950 font-medium leading-relaxed",
+            ),
+            class_name="mt-5 p-3 rounded-xl bg-indigo-50 border border-indigo-100",
+        ),
         class_name="bg-indigo-50/50 rounded-2xl p-6 border border-indigo-100",
     )
 
@@ -144,7 +162,32 @@ def index() -> rx.Component:
                             rx.el.div(
                                 rx.el.div(
                                     rx.el.label(
-                                        "Quantidade máxima de artigos:",
+                                        "Idioma do Relatório / Search Language:",
+                                        class_name="block text-sm font-semibold text-gray-700 mb-2",
+                                    ),
+                                    rx.el.div(
+                                        rx.el.select(
+                                            rx.el.option(
+                                                "Português (BR)", value="pt"
+                                            ),
+                                            rx.el.option("English", value="en"),
+                                            name="search_language",
+                                            value=SearchState.search_language,
+                                            on_change=SearchState.set_search_language,
+                                            disabled=SearchState.is_searching,
+                                            class_name="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-900 font-medium focus:outline-hidden focus:ring-2 focus:ring-indigo-500 appearance-none cursor-pointer disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed",
+                                        ),
+                                        rx.icon(
+                                            "chevron-down",
+                                            class_name="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none",
+                                        ),
+                                        class_name="relative",
+                                    ),
+                                    class_name="flex-1",
+                                ),
+                                rx.el.div(
+                                    rx.el.label(
+                                        "Artigos Máximos:",
                                         class_name="block text-sm font-semibold text-gray-700 mb-2",
                                     ),
                                     rx.el.div(
@@ -177,7 +220,7 @@ def index() -> rx.Component:
                                         ),
                                         class_name="relative",
                                     ),
-                                    class_name="flex-1",
+                                    class_name="w-32",
                                 ),
                                 rx.el.div(
                                     rx.el.div(
@@ -193,7 +236,7 @@ def index() -> rx.Component:
                                         disabled=SearchState.is_searching,
                                         class_name="px-4 py-2.5 rounded-xl border border-gray-200 bg-white text-gray-700 font-semibold hover:bg-gray-50 hover:text-red-600 transition-colors flex items-center justify-center w-full disabled:opacity-50 disabled:cursor-not-allowed",
                                     ),
-                                    class_name="w-32",
+                                    class_name="w-24",
                                 ),
                                 class_name="flex gap-4 mb-6",
                             ),
